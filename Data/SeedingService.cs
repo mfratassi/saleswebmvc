@@ -43,7 +43,7 @@ namespace SalesWebMVC.Data
 
             Seller s2 = new Seller
             {
-                Id = 1,
+                Id = 2,
                 Name = "Bob Marley",
                 Email = "bobmarley@sales.com",
                 BirthDate = new DateTime(1980, 2, 15),
@@ -53,7 +53,7 @@ namespace SalesWebMVC.Data
 
             Seller s3 = new Seller
             {
-                Id = 1,
+                Id = 3,
                 Name = "Chuck Norris",
                 Email = "chucknorris@sales.com",
                 BirthDate = new DateTime(1985, 4, 5),
@@ -63,7 +63,7 @@ namespace SalesWebMVC.Data
 
             Seller s4 = new Seller
             {
-                Id = 1,
+                Id = 4,
                 Name = "Demar Derozan",
                 Email = "demarderozan@sales.com",
                 BirthDate = new DateTime(1985, 8, 12),
@@ -73,7 +73,7 @@ namespace SalesWebMVC.Data
 
             Seller s5 = new Seller
             {
-                Id = 1,
+                Id = 5,
                 Name = "Ema Whatson",
                 Email = "emawhatson@sales.com",
                 BirthDate = new DateTime(1990, 4, 17),
@@ -83,7 +83,7 @@ namespace SalesWebMVC.Data
 
             Seller s6 = new Seller
             {
-                Id = 1,
+                Id = 6,
                 Name = "Fatima Bernardes",
                 Email = "fatimabernardes@sales.com",
                 BirthDate = new DateTime(1950, 1, 15),
