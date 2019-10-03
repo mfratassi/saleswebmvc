@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191002212407_Seller-DepartmentForeignKey.cs" />
     <Compile Remove="Migrations\20191002212407_Seller-DepartmentForeignKey.Designer.cs" />
+    <Compile Remove="Migrations\20191002213406_Seller-DepartmentForeignKey.cs" />
+    <Compile Remove="Migrations\20191002213406_Seller-DepartmentForeignKey.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
