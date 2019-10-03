@@ -20,6 +20,11 @@ namespace SalesWebMVC.Services
             return _context.Seller.ToList();
         }
 
+        public Seller FindById(int id)
+        {
+            return _context.Seller.Where(seller => seller.Id == id).FirstOrDefault();
+        }
+
         public void Insert(Seller seller)
         {
             //seller.Department = _context.Department.First(); //Seller já possui Department apropriado
@@ -27,5 +32,11 @@ namespace SalesWebMVC.Services
             _context.SaveChanges();
         }
 
+        public void Remove(int id)
+        {
+            Seller _seller = _context.Seller.Find(id);
+            _context.Seller.Remove(_seller);
+            _context.SaveChanges();
+        }
     }
 }
