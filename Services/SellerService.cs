@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SalesWebMVC.Models;
+using Microsoft.EntityFrameworkCore; //Para include 
 
 namespace SalesWebMVC.Services
 {
@@ -22,7 +23,10 @@ namespace SalesWebMVC.Services
 
         public Seller FindById(int id)
         {
-            return _context.Seller.Where(seller => seller.Id == id).FirstOrDefault();
+            return _context.Seller
+                .Where(seller => seller.Id == id)
+                .Include(seller => seller.Department)
+                .FirstOrDefault();
         }
 
         public void Insert(Seller seller)
