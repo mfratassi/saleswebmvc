@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SalesWebMVC.Models;
 using Microsoft.EntityFrameworkCore; //Para include 
+using SalesWebMVC.Services.Exceptions;
 
 namespace SalesWebMVC.Services
 {
@@ -38,9 +39,25 @@ namespace SalesWebMVC.Services
 
         public void Remove(int id)
         {
-            Seller _seller = _context.Seller.Find(id);
-            _context.Seller.Remove(_seller);
+            Seller seller = _context.Seller.Find(id);
+            _context.Seller.Remove(seller);
             _context.SaveChanges();
+        }
+
+        public void Update(Seller seller)
+        {
+            //Lança exceção se não existe seller
+            if (!_context.Seller.Any(s => s.Id == seller.Id))
+                throw new NotFoundException(new string("Id não encontrada"));
+            try
+            {
+                _context.Update(seller);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
     }
 }
