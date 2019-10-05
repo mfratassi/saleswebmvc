@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SalesWebMVC.Models;
 using SalesWebMVC.Services;
 
 namespace SalesWebMVC.Controllers
 {
     public class SalesRecordsController : Controller
     {
-
         private readonly SalesRecordService _salesRecordService;
 
         public SalesRecordsController(SalesRecordService salesRecordService)
@@ -33,16 +31,35 @@ namespace SalesWebMVC.Controllers
             {
                 maxDate = DateTime.Now;
             }
-
             ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd");
             ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
-            var salesRecords = await _salesRecordService.FindByDateAsync(minDate, maxDate); 
-            return View(salesRecords); 
+            var result = await _salesRecordService.FindByDateAsync(minDate, maxDate);
+            return View(result);
         }
 
-        public async Task<IActionResult> GroupingSearch()
+        public async Task<IActionResult> GroupingSearch(DateTime? minDate, DateTime? maxDate)
         {
-            return View();
+            if (!minDate.HasValue)
+            {
+                minDate = new DateTime(DateTime.Now.Year-1, 1, 1);
+            }
+            if (!maxDate.HasValue)
+            {
+                maxDate = DateTime.Now;
+            }
+            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
+            try
+            {
+                var result = await _salesRecordService.FindByDateGroupingAsync(minDate, maxDate);
+                return View(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+            
         }
     }
 }

@@ -16,24 +16,48 @@ namespace SalesWebMVC.Services
             _context = context;
         }
 
-        public async Task <List<SalesRecord>> FindByDateAsync(DateTime? min, DateTime? max)
+        public async Task<List<SalesRecord>> FindByDateAsync(DateTime? minDate, DateTime? maxDate)
         {
-            IQueryable<SalesRecord> result = from obj in _context.SalesRecord select obj;
-
-            if (min.HasValue)
-                result = result
-                    .Where(sr => sr.Date >= min.Value);
-            if (max.HasValue)
-                result = result
-                    .Where(sr => sr.Date <= max.Value);
-
+            var result = from obj in _context.SalesRecord select obj;
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Date >= minDate.Value);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Date <= maxDate.Value);
+            }
             return await result
-                .Include(sr => sr.Seller)
-                .Include(sr => sr.Seller.Department)
-                .OrderByDescending(sr => sr.Date)
+                .Include(x => x.Seller)
+                .Include(x => x.Seller.Department)
+                .OrderByDescending(x => x.Date)
                 .ToListAsync();
         }
 
+        public async Task<List<IGrouping<Department, SalesRecord>>> FindByDateGroupingAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            var result = from obj in _context.SalesRecord select obj;
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Date >= minDate.Value);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Date <= maxDate.Value);
+            }
 
+            var test = await result
+                .Include(sr => sr.Seller)
+                .ThenInclude(s => s.Department)
+                .OrderByDescending(sr => sr.Date)
+                .ToListAsync();
+
+            var test2 = test.GroupBy(sr => sr.Seller.Department).ToList();
+
+            Console.WriteLine();
+
+            return test2;
+
+        }
     }
 }
