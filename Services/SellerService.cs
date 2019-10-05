@@ -28,21 +28,30 @@ namespace SalesWebMVC.Services
             return await _context.Seller
                 .Where(seller => seller.Id == id)
                 .Include(seller => seller.Department)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
         public async Task InsertAsync(Seller seller)
         {
             //seller.Department = _context.Department.First(); //Seller já possui Department apropriado
             _context.Add(seller);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task RemoveAsync(int id)
         {
-            Seller seller = await _context.Seller.FindAsync(id);
-            _context.Seller.Remove(seller);
-            await _context.SaveChangesAsync();
+            try
+            {
+                Seller seller = await _context.Seller.FindAsync(id);
+                _context.Seller.Remove(seller);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+
+                throw new IntegrityException("Can\'t delete seller because he/she has sales");
+            }
+            
         }
 
         public async Task UpdateAsync(Seller seller)
